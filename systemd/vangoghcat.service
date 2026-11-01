@@ -1,0 +1,22 @@
+[Unit]
+Description=Van Gogh CryptoCats Sovereign P2P Node (Rust Core v2.0)
+After=network.target
+Documentation=https://github.com/PerfectFriend/VGCatstagram-Rust
+
+[Service]
+Type=simple
+User=%I
+Environment="PORT=8765"
+Environment="RUST_LOG=info"
+ExecStart=/usr/local/bin/vangoghcat start --port 8765
+Restart=on-failure
+RestartSec=5s
+
+# Security sandboxing
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/home/%I/.feline-p2p
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,27 @@
+[package]
+name = "vangoghcat-cli"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "Command-line interface and daemon manager for Van Gogh CryptoCats sovereign node"
+
+[[bin]]
+name = "vangoghcat"
+path = "src/main.rs"
+
+[dependencies]
+vangoghcat-core = { path = "../core" }
+vangoghcat-crypto = { path = "../crypto" }
+vangoghcat-storage = { path = "../storage" }
+vangoghcat-p2p = { path = "../p2p" }
+vangoghcat-server = { path = "../server" }
+clap = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+hex = { workspace = true }
+x25519-dalek = { workspace = true }
+rand = { workspace = true }
+axum = { workspace = true }

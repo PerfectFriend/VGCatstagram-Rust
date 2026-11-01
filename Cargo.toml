@@ -8,6 +8,7 @@ members = [
     "crates/server",
     "crates/bridge",
     "crates/tauri-app",
+    "crates/cli",
 ]
 
 [workspace.package]
@@ -19,6 +20,9 @@ repository = "https://github.com/vangoghcat/VGCatstagram-Rust"
 description = "Sovereign Rust Core for Van Gogh CryptoCats — decentralized P2P art gallery & AI cat generator"
 
 [workspace.dependencies]
+# CLI
+clap = { version = "4.5", features = ["derive"] }
+
 # Serialization
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
