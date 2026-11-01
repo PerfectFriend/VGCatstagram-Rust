@@ -9,6 +9,7 @@ members = [
     "crates/bridge",
     "crates/tauri-app",
     "crates/cli",
+    "crates/wasm",
 ]
 
 [workspace.package]

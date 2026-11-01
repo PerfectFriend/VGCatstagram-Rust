@@ -4,12 +4,16 @@
 
 pub mod contract;
 pub mod daemon;
+pub mod discovery;
+pub mod fec;
 pub mod nostr;
 pub mod smp;
 pub mod xftp;
 
 pub use contract::*;
 pub use daemon::*;
+pub use discovery::*;
+pub use fec::*;
 pub use nostr::*;
 pub use smp::*;
 pub use xftp::*;

@@ -14,6 +14,8 @@ use vangoghcat_p2p::daemon::CatP2PDaemon;
 use vangoghcat_storage::StorageDb;
 use x25519_dalek::{PublicKey, StaticSecret};
 
+mod monitor;
+
 #[derive(Parser)]
 #[command(name = "vangoghcat")]
 #[command(author = "VanGoghCat Guild")]
@@ -55,6 +57,21 @@ enum Commands {
 
     /// Runs built-in micro-benchmarks comparing Rust Core vs baseline
     Benchmark,
+
+    /// Launches interactive terminal dashboard (TUI) monitoring local sovereign node
+    Monitor {
+        /// Target node API port
+        #[arg(short, long, default_value = "8765")]
+        port: u16,
+
+        /// Path to storage directory (for offline inspection)
+        #[arg(short, long)]
+        storage: Option<String>,
+
+        /// Render a single snapshot and exit without continuous watch
+        #[arg(long)]
+        once: bool,
+    },
 
     /// Displays node system info and protocol capabilities
     Info,
@@ -182,6 +199,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         Commands::Benchmark => {
             run_benchmarks();
+        }
+
+        Commands::Monitor {
+            port,
+            storage,
+            once,
+        } => {
+            let storage_path = storage.map(std::path::PathBuf::from);
+            monitor::run_monitor(port, storage_path, once).await?;
         }
 
         Commands::Info => {

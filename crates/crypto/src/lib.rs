@@ -19,11 +19,11 @@ pub mod keccak;
 pub mod merkle;
 pub mod zkp;
 
-pub use base58::encode_base58;
+pub use base58::{decode_base58, encode_base58};
 pub use bech32_codec::{decode_bech32, encode_bech32};
 pub use double_ratchet::{RatchetHeader, RatchetMessage, RatchetSession};
 pub use hash::*;
 pub use identity::{generate_cat_node_id, CatNodeIdentity};
 pub use keccak::keccak256;
-pub use merkle::MerkleTree;
+pub use merkle::{MerkleProof, MerkleTree};
 pub use zkp::{ZkpPromptCommitment, ZkpPromptEngine, ZkpPromptReveal};
