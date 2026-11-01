@@ -1,5 +1,8 @@
 //! Censorship bridge module for Onion v3 and SOCKS5 failovers.
 
+pub mod failover;
+pub use failover::*;
+
 pub mod bridge {
     use serde::{Deserialize, Serialize};
 

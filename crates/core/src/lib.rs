@@ -7,7 +7,9 @@
 pub mod types;
 pub mod constants;
 pub mod error;
+pub mod auction;
 
 pub use types::*;
 pub use constants::*;
 pub use error::VgcError;
+pub use auction::*;

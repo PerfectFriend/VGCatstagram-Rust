@@ -16,6 +16,8 @@ pub mod identity;
 pub mod bech32_codec;
 pub mod keccak;
 pub mod aes;
+pub mod double_ratchet;
+pub mod zkp;
 
 pub use hash::*;
 pub use base58::encode_base58;
@@ -23,3 +25,5 @@ pub use merkle::MerkleTree;
 pub use identity::{generate_cat_node_id, CatNodeIdentity};
 pub use bech32_codec::{encode_bech32, decode_bech32};
 pub use keccak::keccak256;
+pub use double_ratchet::{RatchetHeader, RatchetMessage, RatchetSession};
+pub use zkp::{ZkpPromptCommitment, ZkpPromptEngine, ZkpPromptReveal};

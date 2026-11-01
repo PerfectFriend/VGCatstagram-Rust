@@ -7,8 +7,11 @@ description = "Tauri v2 Desktop integration and IPC bridge for VanGoghCat"
 
 [dependencies]
 vangoghcat-core = { path = "../core" }
+vangoghcat-crypto = { path = "../crypto" }
+vangoghcat-p2p = { path = "../p2p" }
 vangoghcat-server = { path = "../server" }
 serde = { workspace = true }
 serde_json = { workspace = true }
 tokio = { workspace = true }
 tracing = { workspace = true }
+hex = { workspace = true }
