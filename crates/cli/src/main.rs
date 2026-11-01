@@ -11,7 +11,6 @@ use vangoghcat_crypto::{
     keccak256, sha256, CatNodeIdentity, MerkleTree, RatchetSession, ZkpPromptEngine,
 };
 use vangoghcat_p2p::daemon::CatP2PDaemon;
-use vangoghcat_server::build_app;
 use vangoghcat_storage::StorageDb;
 use x25519_dalek::{PublicKey, StaticSecret};
 
@@ -36,6 +35,10 @@ enum Commands {
         /// Path to the storage directory
         #[arg(short, long)]
         storage: Option<String>,
+
+        /// Path to the frontend SPA static files (dist directory)
+        #[arg(short, long)]
+        web: Option<String>,
     },
 
     /// Key management and CatNode identity operations
@@ -95,7 +98,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::Start { port, storage } => {
+        Commands::Start { port, storage, web } => {
             tracing_subscriber::fmt::init();
             let storage_dir = match storage {
                 Some(p) => std::path::PathBuf::from(p),
@@ -106,6 +109,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             };
             std::fs::create_dir_all(&storage_dir)?;
 
+            let web_dir = web
+                .map(std::path::PathBuf::from)
+                .or_else(vangoghcat_server::find_web_dir);
+
             let identity = CatNodeIdentity::generate();
             println!("╔════════════════════════════════════════════════════════════════════╗");
             println!("║  🦀 Van Gogh CryptoCats Sovereign Daemon v2.0 (Rust Core)          ║");
@@ -113,13 +120,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("║  Node ID: {:<56} ║", identity.node_id);
             println!("║  Storage: {:<56} ║", storage_dir.display());
             println!("║  Address: http://0.0.0.0:{:<43} ║", port);
+            if let Some(ref w) = web_dir {
+                println!("║  Web SPA: {:<56} ║", w.display());
+            } else {
+                println!("║  Web SPA: {:<56} ║", "Headless (API only)");
+            }
             println!("╚════════════════════════════════════════════════════════════════════╝");
 
             let db_path = storage_dir.join("vgc_sled_db");
             let db = Arc::new(StorageDb::open(db_path)?);
             let daemon = Arc::new(CatP2PDaemon::new(identity, db));
 
-            let app = build_app(daemon);
+            let app = vangoghcat_server::build_app_with_web(daemon, web_dir);
             let addr = format!("0.0.0.0:{}", port);
             let listener = tokio::net::TcpListener::bind(&addr).await?;
             info!("Listening on http://{}", addr);
