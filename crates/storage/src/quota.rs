@@ -31,10 +31,13 @@ impl QuotaGuard {
 
     /// Attempts to allocate storage for own artwork.
     pub fn reserve_own(&self, bytes: u64) -> Result<(), VgcError> {
-        let mut state = self.inner.write().map_err(|_| VgcError::StorageQuotaExceeded {
-            requested: bytes,
-            available: 0,
-        })?;
+        let mut state = self
+            .inner
+            .write()
+            .map_err(|_| VgcError::StorageQuotaExceeded {
+                requested: bytes,
+                available: 0,
+            })?;
 
         let available = OWN_STORAGE_LIMIT_BYTES.saturating_sub(state.own_used_bytes);
         if bytes > available {
@@ -57,10 +60,13 @@ impl QuotaGuard {
 
     /// Attempts to allocate storage for peer escrow.
     pub fn reserve_peer(&self, peer_id: &str, bytes: u64) -> Result<(), VgcError> {
-        let mut state = self.inner.write().map_err(|_| VgcError::StorageQuotaExceeded {
-            requested: bytes,
-            available: 0,
-        })?;
+        let mut state = self
+            .inner
+            .write()
+            .map_err(|_| VgcError::StorageQuotaExceeded {
+                requested: bytes,
+                available: 0,
+            })?;
 
         let current_peer_used = *state.peer_used_bytes.get(peer_id).unwrap_or(&0);
         let total_peer_used: u64 = state.peer_used_bytes.values().sum();
@@ -85,7 +91,10 @@ impl QuotaGuard {
             });
         }
 
-        *state.peer_used_bytes.entry(peer_id.to_string()).or_insert(0) += bytes;
+        *state
+            .peer_used_bytes
+            .entry(peer_id.to_string())
+            .or_insert(0) += bytes;
         Ok(())
     }
 
@@ -102,7 +111,11 @@ impl QuotaGuard {
     pub fn stats(&self) -> (u64, u64, u64) {
         if let Ok(state) = self.inner.read() {
             let total_peer: u64 = state.peer_used_bytes.values().sum();
-            (state.own_used_bytes, total_peer, state.own_used_bytes + total_peer)
+            (
+                state.own_used_bytes,
+                total_peer,
+                state.own_used_bytes + total_peer,
+            )
         } else {
             (0, 0, 0)
         }

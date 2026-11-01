@@ -7,15 +7,9 @@ use vangoghcat_core::{
     VgcError,
 };
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CircleOfPeers {
     pub peers: Vec<String>,
-}
-
-impl Default for CircleOfPeers {
-    fn default() -> Self {
-        Self { peers: Vec::new() }
-    }
 }
 
 impl CircleOfPeers {

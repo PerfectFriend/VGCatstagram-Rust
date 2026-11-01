@@ -12,3 +12,4 @@ chrono = { workspace = true }
 thiserror = { workspace = true }
 tiny-keccak = { workspace = true }
 hex = { workspace = true }
+toml = { workspace = true }

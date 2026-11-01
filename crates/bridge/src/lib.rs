@@ -6,21 +6,11 @@ pub use failover::*;
 pub mod bridge {
     use serde::{Deserialize, Serialize};
 
-    #[derive(Debug, Clone, Serialize, Deserialize)]
+    #[derive(Debug, Clone, Default, Serialize, Deserialize)]
     pub struct BridgeConfig {
         pub enabled: bool,
         pub socks5_proxy: Option<String>,
         pub tor_onion_endpoint: Option<String>,
-    }
-
-    impl Default for BridgeConfig {
-        fn default() -> Self {
-            Self {
-                enabled: false,
-                socks5_proxy: None,
-                tor_onion_endpoint: None,
-            }
-        }
     }
 
     impl BridgeConfig {

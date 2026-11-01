@@ -11,7 +11,7 @@ use vangoghcat_crypto::sha256_hex;
 pub const NOSTR_KIND_SET_METADATA: u32 = 0;
 pub const NOSTR_KIND_TEXT_NOTE: u32 = 1;
 pub const NOSTR_KIND_FILE_METADATA: u32 = 1063; // NIP-94
-pub const NOSTR_KIND_ZAP_REQUEST: u32 = 9734;   // NIP-57
+pub const NOSTR_KIND_ZAP_REQUEST: u32 = 9734; // NIP-57
 pub const NOSTR_KIND_ZAP_RECEIPT: u32 = 9735;
 
 pub const DEFAULT_NOSTR_RELAYS: &[&str] = &[
@@ -143,7 +143,8 @@ mod tests {
             artwork_id: "art_starry_cat".into(),
             title: "Starry Night Feline".into(),
             image_url: "https://vangoghcat.eth/art/1.png".into(),
-            content_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855".into(),
+            content_sha256: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                .into(),
             dimensions: "1024x1024".into(),
             mime_type: "image/png".into(),
             author_npub: "npub1xyz...".into(),

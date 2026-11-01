@@ -26,7 +26,11 @@ pub struct XftpEngine;
 impl XftpEngine {
     /// Slices raw bytes into XFTP chunks and computes Merkle root.
     pub fn package(data: &[u8], chunk_size: usize) -> (XftpManifest, Vec<XftpFileChunk>) {
-        let chunk_size = if chunk_size == 0 { DEFAULT_CHUNK_SIZE } else { chunk_size };
+        let chunk_size = if chunk_size == 0 {
+            DEFAULT_CHUNK_SIZE
+        } else {
+            chunk_size
+        };
         let raw_chunks: Vec<Vec<u8>> = data
             .chunks(chunk_size)
             .map(|slice| slice.to_vec())

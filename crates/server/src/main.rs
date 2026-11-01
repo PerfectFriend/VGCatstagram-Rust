@@ -27,7 +27,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let listener = tokio::net::TcpListener::bind(&addr).await?;
     info!("VanGoghCat Axum Core Server running at http://{}", addr);
-    info!("WebSocket Signaling Relay available at ws://{}/ws/signaling", addr);
+    info!(
+        "WebSocket Signaling Relay available at ws://{}/ws/signaling",
+        addr
+    );
 
     axum::serve(listener, app).await?;
     Ok(())

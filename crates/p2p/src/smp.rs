@@ -46,9 +46,10 @@ impl SmpQueueManager {
         payload_encrypted_hex: &str,
         ttl_seconds: u32,
     ) -> Result<SmpMessage, VgcError> {
-        let mut queues = self.queues.write().map_err(|_| {
-            VgcError::InvalidNodeId("Failed to acquire lock for SMP queues".into())
-        })?;
+        let mut queues = self
+            .queues
+            .write()
+            .map_err(|_| VgcError::InvalidNodeId("Failed to acquire lock for SMP queues".into()))?;
 
         let msg = SmpMessage {
             message_id: format!("msg_{}", Uuid::new_v4().simple()),

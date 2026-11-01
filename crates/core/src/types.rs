@@ -10,9 +10,10 @@ use serde::{Deserialize, Serialize};
 // ─────────────────────────────────────────────────────────────────────────────
 
 /// Aspect ratio presets matching the frontend type `AspectRatioType`.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub enum AspectRatio {
     #[serde(rename = "1:1")]
+    #[default]
     Square,
     #[serde(rename = "16:9")]
     Wide,
@@ -22,12 +23,6 @@ pub enum AspectRatio {
     Portrait,
     #[serde(rename = "9:16")]
     Tall,
-}
-
-impl Default for AspectRatio {
-    fn default() -> Self {
-        Self::Square
-    }
 }
 
 /// A single color in the palette of an artwork.
@@ -181,7 +176,7 @@ pub struct StorageNodeQuota {
 pub struct StorageContractReq {
     #[serde(rename = "type")]
     pub msg_type: String, // "CATP2P_STORAGE_CONTRACT_REQ"
-    pub version: String,  // "1.0"
+    pub version: String, // "1.0"
     pub sender_node_id: String,
     pub allocated_quota_bytes: u64,
     pub current_usage_bytes: u64,

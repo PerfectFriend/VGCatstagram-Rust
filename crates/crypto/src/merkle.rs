@@ -66,7 +66,7 @@ impl MerkleTree {
         let mut idx = index;
 
         while current_level.len() > 1 {
-            let sibling_idx = if idx % 2 == 0 {
+            let sibling_idx = if idx.is_multiple_of(2) {
                 if idx + 1 < current_level.len() {
                     idx + 1
                 } else {
@@ -108,7 +108,7 @@ impl MerkleTree {
 
         for sibling in &proof.siblings {
             let mut combined = [0u8; 64];
-            if idx % 2 == 0 {
+            if idx.is_multiple_of(2) {
                 combined[..32].copy_from_slice(&current);
                 combined[32..].copy_from_slice(sibling);
             } else {

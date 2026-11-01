@@ -1,6 +1,7 @@
 //! Tauri v2 desktop IPC bridge and commands for VanGoghCat.
 //!
-//! Provides direct Rust handlers invocable from the React frontend via Tauri IPC (`invoke('cmd', ...)`).
+pub mod tray;
+pub use tray::*;
 
 pub mod ipc {
     use serde::{Deserialize, Serialize};
@@ -56,8 +57,7 @@ pub mod ipc {
 
         #[test]
         fn test_ipc_verify_prompt() {
-            let (commit, salt) =
-                ZkpPromptEngine::commit("Vincent cat in Arles", "catnode1vincent");
+            let (commit, salt) = ZkpPromptEngine::commit("Vincent cat in Arles", "catnode1vincent");
             let salt_hex = hex::encode(salt);
 
             let res = cmd_verify_prompt(

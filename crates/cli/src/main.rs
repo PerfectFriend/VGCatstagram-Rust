@@ -158,7 +158,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             } => {
                 let is_valid = ZkpPromptEngine::verify(&prompt, &salt, &author, &commitment);
                 if is_valid {
-                    println!("VERIFICATION SUCCESS: Prompt authenticity cryptographically confirmed!");
+                    println!(
+                        "VERIFICATION SUCCESS: Prompt authenticity cryptographically confirmed!"
+                    );
                 } else {
                     eprintln!("VERIFICATION FAILED: Commitment does not match prompt/author/salt.");
                     std::process::exit(1);
@@ -175,7 +177,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             println!("  Engine:       Rust Tokio + Axum + Sled");
             println!("  Cryptography: SHA-256 (SHA-NI), Ed25519, X25519 Double Ratchet, Keccak256");
             println!("  P2P Quota:    8,000,000,000 bytes (1.6 GB own + 6.4 GB circle of 4)");
-            println!("  Protocols:    SMP (Metadata-free Queues), XFTP (Merkle Chunks), Nostr NIP-01/94");
+            println!(
+                "  Protocols:    SMP (Metadata-free Queues), XFTP (Merkle Chunks), Nostr NIP-01/94"
+            );
         }
     }
 
@@ -216,8 +220,7 @@ fn run_benchmarks() {
 
     // 3. Double Ratchet Multi-Turn Exchange (100 rounds)
     let master_secret = [0x99u8; 32];
-    let mut rng = rand::rngs::OsRng;
-    let bob_secret = StaticSecret::random_from_rng(&mut rng);
+    let bob_secret = StaticSecret::random_from_rng(rand::rngs::OsRng);
     let bob_public = PublicKey::from(&bob_secret);
     let mut alice = RatchetSession::init_alice(&master_secret, bob_public);
     let mut bob = RatchetSession::init_bob(&master_secret, (bob_secret, bob_public));

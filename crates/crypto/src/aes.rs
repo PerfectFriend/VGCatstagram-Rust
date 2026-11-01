@@ -31,7 +31,9 @@ pub fn encrypt_aes_gcm(key: &[u8; 32], plaintext: &[u8]) -> Result<Vec<u8>, VgcE
 /// Decrypts ciphertext where first 12 bytes are the nonce.
 pub fn decrypt_aes_gcm(key: &[u8; 32], payload: &[u8]) -> Result<Vec<u8>, VgcError> {
     if payload.len() < NONCE_SIZE {
-        return Err(VgcError::InvalidNodeId("Payload too short for nonce".into()));
+        return Err(VgcError::InvalidNodeId(
+            "Payload too short for nonce".into(),
+        ));
     }
 
     let cipher = Aes256Gcm::new_from_slice(key)
@@ -40,9 +42,9 @@ pub fn decrypt_aes_gcm(key: &[u8; 32], payload: &[u8]) -> Result<Vec<u8>, VgcErr
     let nonce = Nonce::from_slice(&payload[..NONCE_SIZE]);
     let ciphertext = &payload[NONCE_SIZE..];
 
-    cipher
-        .decrypt(nonce, ciphertext)
-        .map_err(|e| VgcError::SignatureVerificationFailed(format!("AES-GCM decryption failed: {e}")))
+    cipher.decrypt(nonce, ciphertext).map_err(|e| {
+        VgcError::SignatureVerificationFailed(format!("AES-GCM decryption failed: {e}"))
+    })
 }
 
 #[cfg(test)]

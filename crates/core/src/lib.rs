@@ -4,12 +4,14 @@
 //! Van Gogh CryptoCats Rust ecosystem. This crate is the single source
 //! of truth for all data structures exchanged between subsystems.
 
-pub mod types;
+pub mod auction;
+pub mod config;
 pub mod constants;
 pub mod error;
-pub mod auction;
+pub mod types;
 
-pub use types::*;
+pub use auction::*;
+pub use config::VgcConfig;
 pub use constants::*;
 pub use error::VgcError;
-pub use auction::*;
+pub use types::*;

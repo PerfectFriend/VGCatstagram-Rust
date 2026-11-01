@@ -46,8 +46,7 @@ pub struct RatchetSession {
 impl RatchetSession {
     /// Initializes an initiator session (Alice) with Bob's public prekey and initial shared secret.
     pub fn init_alice(shared_master_secret: &[u8; 32], bob_dh_public: PublicKey) -> Self {
-        let mut rng = OsRng;
-        let dh_secret = StaticSecret::random_from_rng(&mut rng);
+        let dh_secret = StaticSecret::random_from_rng(OsRng);
         let dh_public = PublicKey::from(&dh_secret);
 
         // DH ratchet step
@@ -68,7 +67,10 @@ impl RatchetSession {
     }
 
     /// Initializes a recipient session (Bob) with Alice's identity and initial shared secret.
-    pub fn init_bob(shared_master_secret: &[u8; 32], bob_keypair: (StaticSecret, PublicKey)) -> Self {
+    pub fn init_bob(
+        shared_master_secret: &[u8; 32],
+        bob_keypair: (StaticSecret, PublicKey),
+    ) -> Self {
         Self {
             dh_secret: bob_keypair.0,
             dh_public: bob_keypair.1,
@@ -138,8 +140,7 @@ impl RatchetSession {
             self.recv_chain_key = Some(recv_ck);
 
             // 2. Ratchet Send Chain with a fresh keypair
-            let mut rng = OsRng;
-            self.dh_secret = StaticSecret::random_from_rng(&mut rng);
+            self.dh_secret = StaticSecret::random_from_rng(OsRng);
             self.dh_public = PublicKey::from(&self.dh_secret);
 
             let dh_send = self.dh_secret.diffie_hellman(&their_dh);
@@ -202,8 +203,7 @@ mod tests {
         let master_secret = [0x5Au8; 32];
 
         // Bob prepares keypair
-        let mut rng = OsRng;
-        let bob_secret = StaticSecret::random_from_rng(&mut rng);
+        let bob_secret = StaticSecret::random_from_rng(OsRng);
         let bob_public = PublicKey::from(&bob_secret);
 
         // Alice initializes session with Bob's public key
@@ -216,12 +216,16 @@ mod tests {
         assert_eq!(dec1, b"Hello Bob from Alice!");
 
         // Bob responds to Alice
-        let msg2 = bob.encrypt(b"Hey Alice, secret received!").expect("encrypt");
+        let msg2 = bob
+            .encrypt(b"Hey Alice, secret received!")
+            .expect("encrypt");
         let dec2 = alice.decrypt(&msg2).expect("decrypt");
         assert_eq!(dec2, b"Hey Alice, secret received!");
 
         // Alice replies back
-        let msg3 = alice.encrypt(b"Perfect Forward Secrecy guaranteed!").expect("encrypt");
+        let msg3 = alice
+            .encrypt(b"Perfect Forward Secrecy guaranteed!")
+            .expect("encrypt");
         let dec3 = bob.decrypt(&msg3).expect("decrypt");
         assert_eq!(dec3, b"Perfect Forward Secrecy guaranteed!");
     }

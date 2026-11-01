@@ -64,11 +64,7 @@ pub struct AuctionEngine;
 
 impl AuctionEngine {
     /// Computes EVM-compatible commitment hash: keccak256(amount_uint256 || salt_bytes32 || bidder_address)
-    pub fn compute_bid_hash(
-        amount_wei: u128,
-        salt: &[u8; 32],
-        bidder_address: &str,
-    ) -> [u8; 32] {
+    pub fn compute_bid_hash(amount_wei: u128, salt: &[u8; 32], bidder_address: &str) -> [u8; 32] {
         let mut hasher = Keccak::v256();
 
         // 1. Amount as 32-byte big-endian uint256
@@ -80,7 +76,9 @@ impl AuctionEngine {
         hasher.update(salt);
 
         // 3. Bidder address (20 bytes normalized)
-        let clean_addr = bidder_address.trim_start_matches("0x").trim_start_matches("0X");
+        let clean_addr = bidder_address
+            .trim_start_matches("0x")
+            .trim_start_matches("0X");
         if let Ok(addr_bytes) = hex::decode(clean_addr) {
             let mut padded_addr = [0u8; 32];
             let offset = 32usize.saturating_sub(addr_bytes.len());

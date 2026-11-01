@@ -1,0 +1,68 @@
+name: 🦀 VanGoghCat Rust Core CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Workspace Cargo Check
+        run: cargo check --workspace --all-targets
+
+      - name: Run Test Suite (29 unit & integration tests)
+        run: cargo test --workspace --all-targets --verbose
+
+      - name: Run Micro-Benchmarks Verification
+        run: cargo run -p vangoghcat-cli -- benchmark
+
+  package-linux:
+    name: Build Debian (.deb) Package
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Build .deb Package
+        run: ./scripts/build-deb.sh
+
+      - name: Upload Debian Package Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vangoghcat-core-debian-amd64
+          path: dist/*.deb
+          if-no-files-found: error

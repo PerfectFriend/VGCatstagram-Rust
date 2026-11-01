@@ -1,12 +1,12 @@
 //! Core CatP2PDaemon orchestrator.
 
+use crate::contract::CircleOfPeers;
+use crate::smp::SmpQueueManager;
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use tokio::sync::RwLock;
 use vangoghcat_crypto::CatNodeIdentity;
 use vangoghcat_storage::{QuotaGuard, StorageDb};
-use crate::contract::CircleOfPeers;
-use crate::smp::SmpQueueManager;
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
