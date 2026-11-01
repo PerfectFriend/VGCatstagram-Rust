@@ -1,0 +1,67 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/core",
+    "crates/crypto",
+    "crates/storage",
+    "crates/p2p",
+    "crates/server",
+    "crates/bridge",
+    "crates/tauri-app",
+]
+
+[workspace.package]
+version = "2.0.0"
+edition = "2021"
+authors = ["VanGoghCat Guild"]
+license = "MIT"
+repository = "https://github.com/vangoghcat/VGCatstagram-Rust"
+description = "Sovereign Rust Core for Van Gogh CryptoCats — decentralized P2P art gallery & AI cat generator"
+
+[workspace.dependencies]
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Async Runtime
+tokio = { version = "1.40", features = ["full"] }
+
+# Cryptography
+sha2 = "0.10"
+hmac = "0.12"
+hkdf = "0.12"
+aes-gcm = "0.10"
+ed25519-dalek = { version = "2.1", features = ["serde", "rand_core"] }
+x25519-dalek = { version = "2.0", features = ["serde"] }
+rand = "0.8"
+bs58 = "0.5"
+bech32 = "0.11"
+tiny-keccak = { version = "2.0", features = ["keccak"] }
+hex = "0.4"
+
+# Storage
+sled = "0.34"
+
+# Web Server
+axum = "0.8"
+tower-http = { version = "0.6", features = ["cors", "compression-gzip", "fs"] }
+tokio-tungstenite = "0.24"
+
+# Logging & Tracing
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Utilities
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.10", features = ["v4", "serde"] }
+thiserror = "2.0"
+bytes = "1.7"
+base64 = "0.22"
+futures-util = "0.3"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+opt-level = "z"
+panic = "abort"

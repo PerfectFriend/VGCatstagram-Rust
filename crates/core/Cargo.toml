@@ -1,0 +1,12 @@
+[package]
+name = "vangoghcat-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "Domain types, constants, and protocol enums for the Van Gogh CryptoCats ecosystem"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }
+thiserror = { workspace = true }

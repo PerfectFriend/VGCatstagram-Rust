@@ -1,0 +1,21 @@
+[package]
+name = "vangoghcat-p2p"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "CatP2P Swarm, Simple Messaging Protocol (SMP), XFTP chunking, and storage mutual contracts"
+
+[dependencies]
+vangoghcat-core = { path = "../core" }
+vangoghcat-crypto = { path = "../crypto" }
+vangoghcat-storage = { path = "../storage" }
+tokio = { workspace = true }
+bytes = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+rand = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+hex = { workspace = true }

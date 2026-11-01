@@ -1,0 +1,14 @@
+[package]
+name = "vangoghcat-bridge"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "Censorship-resistance bridges: Onion v3, SOCKS5, and transport failover"
+
+[dependencies]
+vangoghcat-core = { path = "../core" }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }

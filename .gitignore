@@ -1,0 +1,6 @@
+/target
+**/*.rs.bk
+Cargo.lock
+*.log
+.DS_Store
+.feline-p2p/
